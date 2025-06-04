@@ -157,6 +157,16 @@ document.addEventListener('DOMContentLoaded', function() {
         input.addEventListener('input', calcularTotalDispositivos);
     });
 
+    // Limitar dpiCle a 13 dígitos numéricos
+    document.getElementById('dpiCle').addEventListener('input', function(e) {
+        this.value = this.value.replace(/\D/g, '').slice(0, 13);
+    });
+
+    // Limitar movil a 8 dígitos numéricos
+    document.getElementById('movil').addEventListener('input', function(e) {
+        this.value = this.value.replace(/\D/g, '').slice(0, 8);
+    });
+
     // Botón para enviar y descargar PDF
     document.getElementById('submitAndDownloadBtn').addEventListener('click', function() {
         // Guardar las firmas como datos de imagen
@@ -172,10 +182,24 @@ document.addEventListener('DOMContentLoaded', function() {
         const oficialInventario = document.getElementById('oficialInventario').value.trim();
         const fechaReporte = document.getElementById('fechaReporte').value;
         const horaReporte = document.getElementById('horaReporte').value;
-        const municipalidad = document.getElementById('municipalidad').value.trim(); // <-- Agregado
-
-        if (!oficialInventario || !fechaReporte || !horaReporte || !municipalidad) { // <-- Agregado municipalidad
+        const municipalidad = document.getElementById('municipalidad').value.trim();
+        const dpiCle = document.getElementById('dpiCle').value.trim();
+        const movil = document.getElementById('movil').value.trim();
+        if (!oficialInventario || !fechaReporte || !horaReporte || !municipalidad) {
             alert('Por favor complete todos los campos requeridos: Oficial de Inventario, Fecha, Hora de Reporte y Municipalidad');
+            return;
+        }
+
+        // Validar DPI: si no está vacío, debe tener exactamente 13 dígitos
+        if (dpiCle !== "" && dpiCle.length !== 13) {
+            alert('El campo DPI (CUI) debe contener exactamente 13 dígitos numéricos.');
+            document.getElementById('dpiCle').focus();
+            return;
+        }
+        // Validar movil: si no está vacío, debe tener exactamente 8 dígitos
+        if (movil !== "" && movil.length !== 8) {
+            alert('El campo Movil debe contener exactamente 8 dígitos numéricos.');
+            document.getElementById('movil').focus();
             return;
         }
 
@@ -241,4 +265,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    
 });
