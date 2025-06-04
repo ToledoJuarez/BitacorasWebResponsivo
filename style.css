@@ -128,8 +128,8 @@ table th {
     flex-direction: row; /* Siempre en fila */
     flex-wrap: nowrap; /* Evita que se envuelva */
     justify-content: space-around; /* Distribuye las firmas con espacio */
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin-top: 0px;
+    margin-bottom: 0px;
     gap: 10px; /* Espacio mínimo entre bloques de firma */
 }
 
