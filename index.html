@@ -112,18 +112,20 @@
                 </div>
                 <div class="info-row">
                     <label for="dpiCle">DPI (CUI):</label>
-                    <input placeholder="DPI acompañate municipal" type="text" id="dpiCle">
+                    <input placeholder="DPI acompañate municipal" type="text" id="dpiCle" maxlength="13" pattern="\d{13}" inputmode="numeric" title="Debe contener 13 dígitos numéricos">
                     <label for="movil">MÓVIL:</label>
-                    <input placeholder="Numero de telefono" type="text" id="movil">
+                    <input placeholder="Numero de telefono" type="text" id="movil" maxlength="8" pattern="\d{8}" inputmode="numeric" title="Debe contener 8 dígitos numéricos">
                 </div>
                 <div class="info-row">
                     <label for="municipalidad">MUNICIPALIDAD:</label>
                     <input type="text" id="municipalidad" placeholder="Nombre de la municipalidad" list="sugerenciasMunicipalidades" required>
                     <datalist id="sugerenciasMunicipalidades">
                     </datalist>
-
                     <label for="cargoMunicipal">CARGO MUNICIPAL:</label>
                     <input placeholder="Puesto dentro de la muni" type="text" id="cargoMunicipal">
+                </div>
+                <div>
+                    
                 </div>
             </section>
             
