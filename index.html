@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitácora Inventario Diario</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container" id="printableArea"> <header>
+            <h1>BITACORA INVENTARIO DIARIO</h1>
+            <p>INVENTARIO ALUMBRADO PÚBLICO</p>
+        </header>
+
+        <section class="report-info">
+            <div class="info-row">
+                <label for="oficialInventario">Oficial de Inventario:</label>
+                <input type="text" id="oficialInventario" placeholder="Nombre del técnico" list="sugerenciasOficiales" required>
+                
+                <datalist id="sugerenciasOficiales">
+                    <option value="EDGAR RODOLFO MACZ PACAY"></option>
+                    <option value="EMANUEL DE JESÚS CERMEÑO"></option>
+                    <option value="JASON NOE VASQUEZ ALONZO"></option>
+                    <option value="MARCO EMMANUEL ALEXANDER ORDOÑEZ PÉREZ"></option>
+                    <option value="MIGUEL ANGEL CHÁVEZ PIO"></option>
+                    <option value="VITALINO VEGA ESCOBAR"></option>
+                </datalist>
+            </div>
+
+            <div class="info-row info-row-fecha-hora">
+                <label for="fechaReporte">Fecha de Reporte:</label>
+                <input type="date" id="fechaReporte" placeholder="Fecha de bitacora" required>
+                <label for="horaReporte">Hora de Reporte:</label>    
+                <input type="time" id="horaReporte"  placeholder="Hora de bitacora" required>
+            </div>
+        </section>
+
+        <section class="device-inventory">
+            <table>
+                <thead>
+                    <tr>
+                        <th>DISPOSITIVOS</th>
+                        <th>CANTIDAD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cámaras</td>
+                        <td><input type="number" id="cantCamaras" class="quantity-input" value="0"></td>
+                    </tr>
+                    <tr>
+                        <td>Cronómetros</td>
+                        <td><input type="number" id="cantCronometros" class="quantity-input" value="0"></td>
+                    </tr>
+                    <tr>
+                        <td>Direccionales</td>
+                        <td><input type="number" id="cantDireccionales" class="quantity-input" value="0"></td>
+                    </tr>
+                    <tr>
+                        <td>Lámparas</td>
+                        <td><input type="number" id="cantLamparas" class="quantity-input" value="0"></td>
+                    </tr>
+                    <tr>
+                        <td>Mupis</td>
+                        <td><input type="number" id="cantMupis" class="quantity-input" value="0"></td>
+                    </tr>
+                    <tr>
+                        <td>Ornamentales</td>
+                        <td><input type="number" id="cantOrnamentales" class="quantity-input" value="0"></td>
+                    </tr>
+                    <tr>
+                        <td>Pantallas Informativas</td>
+                        <td><input type="number" id="cantPantallasInformativas" class="quantity-input" value="0"></td>
+                    </tr>
+                    <tr>
+                        <td>Parada Transmetro</td>
+                        <td><input type="number" id="cantParadaTransmetro" class="quantity-input" value="0"></td>
+                    </tr>
+                    <tr>
+                        <td>Parada Transurbano</td>
+                        <td><input type="number" id="cantParadaTransurbano" class="quantity-input" value="0"></td>
+                    </tr>
+                    <tr>
+                        <td>Reflectores</td>
+                        <td><input type="number" id="cantReflectores" class="quantity-input" value="0"></td>
+                    </tr>
+                    <tr>
+                        <td>Semáforos</td>
+                        <td><input type="number" id="cantSemaforos" class="quantity-input" value="0"></td>
+                    </tr>
+                    <tr>
+                        <td>Vallas Publicitarias</td>
+                        <td><input type="number" id="cantVallasPublicitarias" class="quantity-input" value="0"></td>
+                    </tr>
+                    <tr>
+                        <td>Wal-Pak</td>
+                        <td><input type="number" id="cantWalPak" class="quantity-input" value="0"></td>
+                    </tr>
+                    <tr class="total-row">
+                        <td>Total de Dispositivos:</td>
+                        <td><span id="totalDispositivos">0</span></td>  
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="municipal-info">
+            <div class="info-row">
+                <label for="acompananteMunicipal">ACOMPAÑANTE MUNICIPAL:</label>
+                <input placeholder="Nombre acompañante municipal" type="text" id="acompananteMunicipal">
+            </div>
+            <div class="info-row">
+                <label for="dpiCle">DPI (CUI):</label>
+                <input placeholder="DPI acompañate municipal" type="text" id="dpiCle">
+                <label for="movil">MÓVIL:</label>
+                <input placeholder="Numero de telefono" type="text" id="movil">
+            </div>
+            <div class="info-row">
+                <label for="municipalidad">MUNICIPALIDAD:</label>
+                <input type="text" id="municipalidad" placeholder="Nombre de la municipalidad" list="sugerenciasMunicipalidades" required>
+                <datalist id="sugerenciasMunicipalidades">
+                </datalist>
+
+                <label for="cargoMunicipal">CARGO MUNICIPAL:</label>
+                <input placeholder="Puesto dentro de la muni" type="text" id="cargoMunicipal">
+            </div>
+        </section>
+        
+        <section class="signatures">
+            <div class="signature-block">
+                <label for="firmaAcompananteCanvas">FIRMA ACOMPAÑANTE MUNICIPAL</label>
+                <canvas id="firmaAcompananteCanvas" class="signature-canvas"></canvas>
+                <button type="button" class="clear-signature-btn" data-canvas-id="firmaAcompananteCanvas">Borrar</button>
+                <input type="hidden" id="firmaAcompananteData" name="firma_acompanante_data">
+            </div>
+            <div class="signature-block">
+                <label for="firmaOficialCanvas">FIRMA OFICIAL DE INVENTARIO (GAUSS)</label>
+                <canvas id="firmaOficialCanvas" class="signature-canvas"></canvas>
+                <button type="button" class="clear-signature-btn" data-canvas-id="firmaOficialCanvas">Borrar</button>
+                <input type="hidden" id="firmaOficialData" name="firma_oficial_data">
+            </div>
+        </section>
+
+        <section class="observations">
+			<label for="observaciones">OBSERVACIONES:</label>
+			<textarea placeholder="Ejemplo: Zona trabajada, acompañante se retiro antes de tiempo, no firmaron por tal motivo, problemas con algo en especifico..." id="observaciones" rows="2"></textarea>
+		</section>
+
+        <footer class="logos">
+            <img src="img/gauss-1000.png" alt="GAUSS Logo" class="gauss-logo">
+            <img src="img/EEGSA-1.png" alt="EEGSA Logo" class="eegsa-logo">
+        </footer>
+    </div>
+
+    <button type="button" id="submitAndDownloadBtn" class="action-button">Descargar PDF</button>
+    
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@5.0.0/dist/signature_pad.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>
