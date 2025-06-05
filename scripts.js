@@ -1,7 +1,7 @@
 // scripts.js
 
 document.addEventListener('DOMContentLoaded', function() {
-    // --- NUEVA LÓGICA PARA EL CAMPO "MUNICIPALIDAD" con datalist y sugerencias ---
+    // --- Lógica para sugerencias de municipalidades ---
     const municipalidadInput = document.getElementById('municipalidad');
     const sugerenciasMunicipalidadesDatalist = document.getElementById('sugerenciasMunicipalidades');
 
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
-    // --- Lógica existente para el total de dispositivos (conservada de tu código) ---
+    // --- Total de dispositivos ---
     const quantityInputs = document.querySelectorAll('.quantity-input');
     const totalDispositivosSpan = document.getElementById('totalDispositivos');
 
@@ -83,140 +83,138 @@ document.addEventListener('DOMContentLoaded', function() {
     calcularTotal(); // Calcular el total inicial
 
 
-    // Inicializar los pads de firma
-    const firmaAcompananteCanvas = document.getElementById('firmaAcompananteCanvas');
-    const firmaOficialCanvas = document.getElementById('firmaOficialCanvas');
-    
-    // Configurar los pads de firma
-    const signaturePadAcompanante = new SignaturePad(firmaAcompananteCanvas, {
-        backgroundColor: 'rgb(255, 255, 255)', // fondo blanco
-        penColor: 'rgb(0, 0, 0)' // color negro para la firma
-    });
-    
-    const signaturePadOficial = new SignaturePad(firmaOficialCanvas, {
-        backgroundColor: 'rgb(255, 255, 255)',
-        penColor: 'rgb(0, 0, 0)'
-    });
-
-    // Ajustar el tamaño de los canvas al cambiar el tamaño de la ventana
-    function resizeCanvas(canvas) {
-        const ratio = Math.max(window.devicePixelRatio || 1, 1);
-        canvas.width = canvas.offsetWidth * ratio;
-        canvas.height = canvas.offsetHeight * ratio;
-        canvas.getContext("2d").scale(ratio, ratio);
-    }
-
-    // Aplicar el ajuste inicial y en redimensionamiento
-    [firmaAcompananteCanvas, firmaOficialCanvas].forEach(canvas => {
-        resizeCanvas(canvas);
-        window.addEventListener('resize', () => resizeCanvas(canvas));
-    });
-
-    // Botones para borrar firmas
-    document.querySelectorAll('.clear-signature-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const canvasId = this.getAttribute('data-canvas-id');
-            const canvas = document.getElementById(canvasId);
-            
-            if (canvasId === 'firmaAcompananteCanvas') {
-                signaturePadAcompanante.clear();
-                document.getElementById('firmaAcompananteData').value = '';
-            } else if (canvasId === 'firmaOficialCanvas') {
-                signaturePadOficial.clear();
-                document.getElementById('firmaOficialData').value = '';
-            }
-        });
-    });
-
-    // Configurar la fecha actual por defecto
-    const fechaActual = new Date().toISOString().split('T')[0];
-    document.getElementById('fechaReporte').value = fechaActual;
-
-    // Configurar la hora actual por defecto
-    const ahora = new Date();
-    const horas = ahora.getHours().toString().padStart(2, '0');
-    const minutos = ahora.getMinutes().toString().padStart(2, '0');
-    document.getElementById('horaReporte').value = `${horas}:${minutos}`;
-
-    // Calcular el total de dispositivos
-    function calcularTotalDispositivos() {
-        const inputs = document.querySelectorAll('.quantity-input');
-        let total = 0;
-        
-        inputs.forEach(input => {
-            const valor = parseInt(input.value) || 0;
-            total += valor;
-        });
-        
-        document.getElementById('totalDispositivos').textContent = total;
-    }
-
-    // Escuchar cambios en los inputs de cantidad
-    document.querySelectorAll('.quantity-input').forEach(input => {
-        input.addEventListener('change', calcularTotalDispositivos);
-        input.addEventListener('input', calcularTotalDispositivos);
-    });
-
     // Limitar dpiCle a 13 dígitos numéricos
     document.getElementById('dpiCle').addEventListener('input', function(e) {
         this.value = this.value.replace(/\D/g, '').slice(0, 13);
     });
-
     // Limitar movil a 8 dígitos numéricos
     document.getElementById('movil').addEventListener('input', function(e) {
         this.value = this.value.replace(/\D/g, '').slice(0, 8);
     });
 
-    // Botón para enviar y descargar PDF
-    document.getElementById('submitAndDownloadBtn').addEventListener('click', function() {
-        // Guardar las firmas como datos de imagen
-        if (!signaturePadAcompanante.isEmpty()) {
-            document.getElementById('firmaAcompananteData').value = signaturePadAcompanante.toDataURL();
-        }
-        
-        if (!signaturePadOficial.isEmpty()) {
-            document.getElementById('firmaOficialData').value = signaturePadOficial.toDataURL();
-        }
+    // Configurar la fecha y hora actual por defecto
+    const fechaActual = new Date().toISOString().split('T')[0];
+    document.getElementById('fechaReporte').value = fechaActual;
+    const ahora = new Date();
+    const horas = ahora.getHours().toString().padStart(2, '0');
+    const minutos = ahora.getMinutes().toString().padStart(2, '0');
+    document.getElementById('horaReporte').value = `${horas}:${minutos}`;
 
-        // Validar campos requeridos
+
+    // --- Lógica para firmas con modal ---
+    let signaturePad;
+    let currentSignatureTarget = null;
+
+    document.querySelectorAll('.edit-signature-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            currentSignatureTarget = this.dataset.target;
+            document.getElementById('signatureModal').style.display = 'flex';
+            const canvas = document.getElementById('modalSignatureCanvas');
+
+            // Ajustar el tamaño real del canvas al tamaño mostrado en pantalla
+            function resizeCanvas() {
+                // Obtener el tamaño mostrado en pantalla
+                const rect = canvas.getBoundingClientRect();
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+            }
+            resizeCanvas();
+
+            // Inicializar SignaturePad después de ajustar el tamaño
+            signaturePad = new window.SignaturePad(canvas, {
+                minWidth: 2,   // Grosor mínimo del trazo
+                maxWidth: 4    // Grosor máximo del trazo
+            });
+
+            // Si ya hay firma previa, cargarla en el canvas
+            const imgData = document.getElementById(currentSignatureTarget + 'Data').value;
+            if (imgData) {
+                const img = new window.Image();
+                img.onload = function() {
+                    signaturePad.clear();
+                    const ctx = canvas.getContext('2d');
+                    ctx.clearRect(0,0,canvas.width,canvas.height);
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                };
+                img.src = imgData;
+            } else {
+                signaturePad.clear();
+            }
+        });
+    });
+
+    document.getElementById('clearModalSignature').onclick = function() {
+        signaturePad.clear();
+    };
+
+    document.getElementById('closeModalSignature').onclick = function() {
+        document.getElementById('signatureModal').style.display = 'none';
+    };
+
+    document.getElementById('saveModalSignature').onclick = function() {
+        if (!signaturePad.isEmpty()) {
+            const dataUrl = signaturePad.toDataURL();
+            document.getElementById(currentSignatureTarget + 'Img').src = dataUrl;
+            document.getElementById(currentSignatureTarget + 'Img').style.display = 'block';
+            document.getElementById(currentSignatureTarget + 'Data').value = dataUrl;
+        } else {
+            document.getElementById(currentSignatureTarget + 'Img').src = '';
+            document.getElementById(currentSignatureTarget + 'Img').style.display = 'none';
+            document.getElementById(currentSignatureTarget + 'Data').value = '';
+        }
+        document.getElementById('signatureModal').style.display = 'none';
+    };
+
+    // --- Botón para descargar PDF ---
+    document.getElementById('submitAndDownloadBtn').addEventListener('click', function() {
         const oficialInventario = document.getElementById('oficialInventario').value.trim();
         const fechaReporte = document.getElementById('fechaReporte').value;
         const horaReporte = document.getElementById('horaReporte').value;
         const municipalidad = document.getElementById('municipalidad').value.trim();
+        const acompananteMunicipal = document.getElementById('acompananteMunicipal').value.trim();
+        const firmaOficialImg = document.getElementById('firmaOficialImg').src;
         const dpiCle = document.getElementById('dpiCle').value.trim();
         const movil = document.getElementById('movil').value.trim();
+
         if (!oficialInventario || !fechaReporte || !horaReporte || !municipalidad) {
             alert('Por favor complete todos los campos requeridos: Oficial de Inventario, Fecha, Hora de Reporte y Municipalidad');
             return;
         }
-
-        // Validar DPI: si no está vacío, debe tener exactamente 13 dígitos
+        if (!acompananteMunicipal) {
+            alert('Por favor ingrese el nombre del acompañante municipal.');
+            document.getElementById('acompananteMunicipal').focus();
+            return;
+        }
+        if (!firmaOficialImg || firmaOficialImg.endsWith('base64,')) {
+            alert('Por favor agregue la firma del Oficial de Inventario (GAUSS).');
+            return;
+        }
         if (dpiCle !== "" && dpiCle.length !== 13) {
             alert('El campo DPI (CUI) debe contener exactamente 13 dígitos numéricos.');
             document.getElementById('dpiCle').focus();
             return;
         }
-        // Validar movil: si no está vacío, debe tener exactamente 8 dígitos
         if (movil !== "" && movil.length !== 8) {
             alert('El campo Movil debe contener exactamente 8 dígitos numéricos.');
             document.getElementById('movil').focus();
             return;
         }
-
-        // Generar PDF
         generarPDF();
     });
 
-    // Función para generar PDF
+    // --- Generar PDF ---
     function generarPDF() {
         const { jsPDF } = window.jspdf;
         const element = document.getElementById('printableArea');
+        const downloadBtn = document.getElementById('submitAndDownloadBtn');
 
-        // Obtener los inputs de fecha y hora
+        // Ocultar botones de editar/Agregar firma
+        const editSignatureBtns = document.querySelectorAll('.edit-signature-btn');
+        editSignatureBtns.forEach(btn => btn.style.display = 'none');
+
+        // Reemplazar los inputs de fecha y hora por spans temporales
         const fechaInput = document.getElementById('fechaReporte');
         const horaInput = document.getElementById('horaReporte');
-
-        // Crear spans temporales con los valores
         const fechaSpan = document.createElement('span');
         fechaSpan.textContent = fechaInput.value;
         fechaSpan.style.font = "inherit";
@@ -229,17 +227,19 @@ document.addEventListener('DOMContentLoaded', function() {
         horaSpan.style.padding = "2px 4px";
         horaSpan.style.borderBottom = "1px solid #000";
 
-        // Reemplazar los inputs por los spans
         fechaInput.parentNode.replaceChild(fechaSpan, fechaInput);
         horaInput.parentNode.replaceChild(horaSpan, horaInput);
 
-        // --- OCULTAR PLACEHOLDER TEMPORALMENTE ---
+        // Ocultar placeholders temporalmente
         const inputs = element.querySelectorAll('input[placeholder], textarea[placeholder]');
         const placeholders = [];
         inputs.forEach(input => {
             placeholders.push({ el: input, placeholder: input.placeholder });
             input.placeholder = '';
         });
+
+        // Ocultar el botón de descarga
+        downloadBtn.style.display = 'none';
 
         html2canvas(element, {
             scale: 2,
@@ -259,12 +259,16 @@ document.addEventListener('DOMContentLoaded', function() {
             fechaSpan.parentNode.replaceChild(fechaInput, fechaSpan);
             horaSpan.parentNode.replaceChild(horaInput, horaSpan);
 
-            // --- RESTAURAR PLACEHOLDER ---
+            // Restaurar placeholders
             placeholders.forEach(obj => {
                 obj.el.placeholder = obj.placeholder;
             });
+
+            // Mostrar el botón de descarga nuevamente
+            downloadBtn.style.display = '';
+
+            // Mostrar los botones de editar/Agregar firma nuevamente
+            editSignatureBtns.forEach(btn => btn.style.display = '');
         });
     }
-
-    
 });
