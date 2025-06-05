@@ -44,8 +44,8 @@ header p {
 .report-info,
 .municipal-info,
 .observations {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .info-row {
@@ -186,7 +186,8 @@ table th {
     border-radius: 4px;
     font-size: 14px;
     resize: vertical;
-    min-height: 80px;
+    min-height: 100px;
+    height: 36px;
     box-sizing: border-box;
 }
 
@@ -196,9 +197,8 @@ table th {
     flex-wrap: nowrap; /* Evita que se envuelva */
     justify-content: space-between; /* Un logo a cada extremo */
     /*align-items: center; /* Centra verticalmente los logos */
-    margin-top: auto; /* Empuja los logos al fondo si el contenido es corto */
-    padding-top: 15px;
-    /* gap: 15px; No se necesita gap si usamos space-between */
+    padding-top: 0px;
+    margin-top: 0px; /* Separa los logos del cuadro de observaciones */
 }
 
 .gauss-logo {
@@ -237,6 +237,18 @@ table th {
 .device-inventory table td {
     height: 20px;
     vertical-align: middle;
+}
+
+/* Encabezado de la tabla */
+.device-inventory thead th {
+    background: rgb(0,112,192);
+    color: #fff;
+}
+/* Fila de total de dispositivos */
+.device-inventory .total-row td, 
+.device-inventory .total-row span {
+    background: rgb(189,214,238);
+    font-weight: bold;
 }
 
 #totalDispositivos {
