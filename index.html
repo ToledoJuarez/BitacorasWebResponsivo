@@ -16,7 +16,7 @@
             <section class="report-info">
                 <div class="info-row">
                     <label for="oficialInventario">Oficial de Inventario:</label>
-                    <input type="text" id="oficialInventario" placeholder="Nombre del técnico" list="sugerenciasOficiales" required>
+                    <input type="text" id="oficialInventario" class="center-input" placeholder="Nombre del técnico" list="sugerenciasOficiales" required>
                     
                     <datalist id="sugerenciasOficiales">
                         <option value="EDGAR RODOLFO MACZ PACAY"></option>
@@ -108,7 +108,10 @@
             <section class="municipal-info">
                 <div class="info-row">
                     <label for="acompananteMunicipal">ACOMPAÑANTE MUNICIPAL:</label>
-                    <input placeholder="Nombre acompañante municipal" type="text" id="acompananteMunicipal">
+                    <input placeholder="Nombre acompañante municipal" type="text" id="acompananteMunicipal" list="sugerenciasAcompanantes" required>
+                    <datalist id="sugerenciasAcompanantes">
+                        <option value="SIN ACOMPAÑAMIENTO MUNICIPAL"></option>
+                    </datalist>
                 </div>
                 <div class="info-row">
                     <label for="dpiCle">DPI (CUI):</label>
@@ -119,40 +122,48 @@
                 <div class="info-row">
                     <label for="municipalidad">MUNICIPALIDAD:</label>
                     <input type="text" id="municipalidad" placeholder="Nombre de la municipalidad" list="sugerenciasMunicipalidades" required>
-                    <datalist id="sugerenciasMunicipalidades">
-                    </datalist>
+                    <datalist id="sugerenciasMunicipalidades"></datalist>
                     <label for="cargoMunicipal">CARGO MUNICIPAL:</label>
                     <input placeholder="Puesto dentro de la muni" type="text" id="cargoMunicipal">
-                </div>
-                <div>
-                    
                 </div>
             </section>
             
             <section class="signatures">
-                <div class="signature-block">
-                    <label for="firmaAcompananteCanvas">FIRMA ACOMPAÑANTE MUNICIPAL</label>
-                    <canvas id="firmaAcompananteCanvas" class="signature-canvas"></canvas>
-                    <button type="button" class="clear-signature-btn" data-canvas-id="firmaAcompananteCanvas">Borrar</button>
-                    <input type="hidden" id="firmaAcompananteData" name="firma_acompanante_data">
-                </div>
-                <div class="signature-block">
-                    <label for="firmaOficialCanvas">FIRMA OFICIAL DE INVENTARIO (GAUSS)</label>
-                    <canvas id="firmaOficialCanvas" class="signature-canvas"></canvas>
-                    <button type="button" class="clear-signature-btn" data-canvas-id="firmaOficialCanvas">Borrar</button>
-                    <input type="hidden" id="firmaOficialData" name="firma_oficial_data">
-                </div>
-            </section>
+    <div class="signature-block">
+        <label for="firmaAcompananteImg">FIRMA ACOMPAÑANTE MUNICIPAL</label>
+        <img id="firmaAcompananteImg" class="signature-img" style="display:none;"/>
+        <button type="button" class="edit-signature-btn" data-target="firmaAcompanante">Agregar/Editar firma</button>
+        <input type="hidden" id="firmaAcompananteData" name="firma_acompanante_data">
+    </div>
+    <div class="signature-block">
+        <label for="firmaOficialImg">FIRMA OFICIAL DE INVENTARIO (GAUSS)</label>
+        <img id="firmaOficialImg" class="signature-img" style="display:none;"/>
+        <button type="button" class="edit-signature-btn" data-target="firmaOficial">Agregar/Editar firma</button>
+        <input type="hidden" id="firmaOficialData" name="firma_oficial_data" required>
+    </div>
+</section>
+
+<!-- Modal para capturar la firma -->
+<div id="signatureModal" class="signature-modal" style="display:none;">
+    <div class="signature-modal-content">
+        <canvas id="modalSignatureCanvas" width="1200" height="500"></canvas>
+        <div style="margin-top:10px;">
+            <button type="button" id="clearModalSignature">Limpiar</button>
+            <button type="button" id="saveModalSignature">Guardar</button>
+            <button type="button" id="closeModalSignature">Cerrar</button>
+        </div>
+    </div>
+</div>
 
             <section class="observations">
 				<label for="observaciones">OBSERVACIONES:</label>
 				<textarea placeholder="Ejemplo: Zona trabajada, acompañante se retiro antes de tiempo, no firmaron por tal motivo, problemas con algo en especifico..." id="observaciones" rows="2"></textarea>
 			</section>
 
-            <footer class="logos">
+            <div class="logos">
                 <img src="img/gauss-1000.png" alt="GAUSS Logo" class="gauss-logo">
                 <img src="img/EEGSA-1.png" alt="EEGSA Logo" class="eegsa-logo">
-            </footer>
+            </div>
         </div>
         <button type="button" id="submitAndDownloadBtn" class="action-button">Descargar PDF</button>
     </div>
@@ -160,5 +171,31 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="scripts.js"></script>
+    <style>
+        
+.center-input {
+    text-align: center;
+    color: rgb(0,112,192);
+    /*font-weight: bold;*/
+}
+.signature-modal {
+    position: fixed; z-index: 9999; left: 0; top: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center;
+}
+.signature-modal-content {
+    background: #fff; padding: 0; border-radius: 0; box-shadow: 0 2px 10px #0003;
+    display: flex; flex-direction: column; align-items: center;
+    width: 100vw; height: 100vh; justify-content: center;
+}
+#modalSignatureCanvas {
+    width: 90vw !important;
+    height: 60vh !important;
+    max-width: 100vw;
+    max-height: 80vh;
+    border: 1px solid #ccc;
+    background: #fff;
+}
+.signature-img { max-width: 100%; max-height: 120px; border: 1px solid #ccc; }
+</style>
 </body>
 </html>
