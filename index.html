@@ -134,14 +134,14 @@
         <img id="firmaAcompananteImg" class="signature-img" style="display:none;"/>
         <button type="button" class="edit-signature-btn" data-target="firmaAcompanante">Agregar/Editar firma</button>
         <input type="hidden" id="firmaAcompananteData" name="firma_acompanante_data">
-	<label for="firmaOficialImg">Firma digital</label>
+        <label for="firmaOficialImg">Firma digital</label>
     </div>
     <div class="signature-block">
         <label for="firmaOficialImg">FIRMA OFICIAL DE INVENTARIO (GAUSS)</label>
         <img id="firmaOficialImg" class="signature-img" style="display:none;"/>
         <button type="button" class="edit-signature-btn" data-target="firmaOficial">Agregar/Editar firma</button>
         <input type="hidden" id="firmaOficialData" name="firma_oficial_data" required>
-	<label for="firmaOficialImg">Firma digital</label>
+        <label for="firmaOficialImg">Firma digital</label>
     </div>
 </section>
 
@@ -192,30 +192,29 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100vw;
-    height: 100vh;
+    width: 100vw; /*width: 100vw;*/
+    height: 100vh; /*height: 100vh;*/
     justify-content: flex-start; /* Pega el contenido arriba */
     padding-top: 32px;           /* Espacio superior opcional */
 }
 
 #modalSignatureCanvas {
-    width: 70vw !important;      /* El ancho del canvas será el 45% del ancho de la ventana del navegador (viewport width). El !important asegura que este valor tenga prioridad sobre otros estilos. */
-    height: 30vh !important;
-    /*width: 45vw !important;
-    height: 30vh !important;*/
-    max-width: 98vw;
-    max-height: 40vh;
-    border: 1px solid #ccc;
-    background: #fff;
-    touch-action: none;
+    width: 45vw !important;      /* El ancho del canvas será el 45% del ancho de la ventana del navegador (viewport width). El !important asegura que este valor tenga prioridad sobre otros estilos. */
+    height: 30vh !important;     /* El alto del canvas será el 30% de la altura de la ventana del navegador (viewport height). */
+    /*height: 15vh !important; */
+    max-width: 50vw; /*98vw*/             /* El ancho máximo del canvas nunca será mayor al 98% del ancho de la ventana, para evitar desbordes. */
+    max-height: 40vh;            /* El alto máximo del canvas nunca será mayor al 40% de la altura de la ventana. */
+    border: 1px solid #ccc;      /* El canvas tendrá un borde gris claro de 1 píxel. */
+    background: #fff;            /* El fondo del canvas será blanco. */
+    touch-action: none;          /* Desactiva la acción predeterminada de gestos táctiles (como hacer scroll o zoom) sobre el canvas, permitiendo dibujar con el dedo en dispositivos móviles. */
 }
 
 @media (max-width: 600px) {
     #modalSignatureCanvas {
         width: 95vw !important;
         height: 30vh !important;
-        max-width: 98vw;
-        max-height: 40vh;
+        max-width: 95vw;
+        max-height: 30vh;
     }
 }
 
@@ -238,7 +237,7 @@
 }
 
 .signature-img {
-    max-width: 100%;
+    max-width: 70%;
     max-height: 120px;
     width: auto;
     height: auto;
