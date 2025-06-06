@@ -186,7 +186,7 @@ table th {
     border-radius: 4px;
     font-size: 14px;
     resize: vertical;
-    min-height: 100px;
+    min-height: 50px;
     height: 36px;
     box-sizing: border-box;
 }
