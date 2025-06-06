@@ -123,7 +123,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Inicializar SignaturePad después de ajustar el tamaño
             signaturePad = new window.SignaturePad(canvas, {
                 minWidth: 2,   // Grosor mínimo del trazo
-                maxWidth: 4    // Grosor máximo del trazo
+                maxWidth: 4,    // Grosor máximo del trazo
+                penColor: 'rgb(43,108,167)' // Color azul para la firma
             });
 
             // Si ya hay firma previa, cargarla en el canvas
