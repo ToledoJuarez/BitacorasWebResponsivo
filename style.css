@@ -12,7 +12,7 @@ body {
 
 .container {
     background-color: #fff;
-    padding: 20px;
+    padding: 50px; /* Aumenta el margen interno de la hoja */
     border: 1px solid #ddd;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 100%;
@@ -186,7 +186,7 @@ table th {
     border-radius: 4px;
     font-size: 14px;
     resize: vertical;
-    min-height: 75px;
+    min-height: 50px;
     height: 36px;
     box-sizing: border-box;
 }
@@ -199,6 +199,20 @@ table th {
     /*align-items: center; /* Centra verticalmente los logos */
     padding-top: 0px;
     margin-top: 0px; /* Separa los logos del cuadro de observaciones */
+}
+.logosiso{
+    display: flex;
+    flex-direction: row; /* Siempre en fila */
+    flex-wrap: nowrap; /* Evita que se envuelva */
+    justify-content: flex-start; /* Pegados a la izquierda */
+    align-items: center; /* Centra verticalmente los logos */
+    width: 100%;
+}
+.iqnet-logo {
+    width: 70px;
+    max-width: 50;
+    height: 70px;
+    margin-right: 10px; /* Espacio entre el logo y el texto */
 }
 
 .gauss-logo {
