@@ -243,17 +243,18 @@ document.addEventListener('DOMContentLoaded', function() {
         downloadBtn.style.display = 'none';
 
         html2canvas(element, {
-            scale: 2,
+            scale: 2, // Escala más baja para menor resolución
             logging: false,
             useCORS: true,
             allowTaint: true
         }).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
+            // Convertir a JPEG con calidad 0.5 para máxima compresión
+            const imgData = canvas.toDataURL('image/jpeg', 0.75);
             const pdf = new jsPDF('p', 'mm', 'a4');
             const imgWidth = 210;
             const imgHeight = canvas.height * imgWidth / canvas.width;
 
-            pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+            pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
             pdf.save('Bitacora_Inventario_' + new Date().toISOString().slice(0, 10) + '.pdf');
         }).finally(() => {
             // Restaurar los inputs originales
