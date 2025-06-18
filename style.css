@@ -200,14 +200,12 @@ table th {
     box-sizing: border-box;
     width: 100%;
     max-width: 100%;
-    font-size: 14px;
 }
 
 /* Ajuste específico para móviles */
 @media (max-width: 600px) {
     #observaciones {
-        font-size: 14px;
-        /* font-size: 0.95em; */
+        font-size: 0.95em;
         padding: 6px;
     }
 }
