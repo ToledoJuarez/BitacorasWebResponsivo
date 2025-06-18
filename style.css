@@ -189,7 +189,7 @@ table th {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 1rem; /* Ajusta el tamaño de fuente */
+    font-size: 0.5rem; /* Ajusta el tamaño de fuente */
     /* resize: vertical; */
     min-height: 75px;
     /* height: 36px; */
@@ -198,7 +198,7 @@ table th {
 
 #observaciones {
     /* font-size: 1em; */
-    font-size: 1rem; /* Ajusta el tamaño de fuente */
+    font-size: 0.5rem; /* Ajusta el tamaño de fuente */
     padding: 8px;
     line-height: 1.4;
     /* resize: vertical; */
@@ -492,7 +492,7 @@ table th {
 @media (max-width: 3000px) { /* Puedes ajustar este valor según tus pruebas */
     .observations textarea,
     #observaciones {
-        font-size: 0.9rem; /* O el tamaño que consideres adecuado para que se vea legible */
+        font-size: 0.5rem; /* O el tamaño que consideres adecuado para que se vea legible */
         /* Si es necesario, también puedes ajustar el padding */
         padding: 6px 8px;
     }
@@ -502,7 +502,7 @@ table th {
 @media (max-width: 600px) {
     .observations textarea,
     #observaciones {
-        font-size: 0.9rem; /* Este ya lo tenías, asegúrate de que no entre en conflicto con el de arriba si el de arriba es más específico */
+        font-size: 0.5rem; /* Este ya lo tenías, asegúrate de que no entre en conflicto con el de arriba si el de arriba es más específico */
         padding: 6px;
     }
 }
