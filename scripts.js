@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function() {
         downloadBtn.style.display = 'none';
 
         html2canvas(element, {
-            scale: 2,
+            scale: 2, // Escala baja para menor resolución
             logging: false,
             useCORS: true,
             allowTaint: true
