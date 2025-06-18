@@ -239,17 +239,31 @@ document.addEventListener('DOMContentLoaded', function() {
             input.placeholder = '';
         });
 
+        // --- NUEVO: Reemplazar textarea de observaciones por un div temporal con saltos de línea ---
+        const observacionesTextarea = document.getElementById('observaciones');
+        let observacionesDiv;
+        if (observacionesTextarea) {
+            observacionesDiv = document.createElement('div');
+            observacionesDiv.style.whiteSpace = 'pre-line';
+            observacionesDiv.style.textAlign = 'justify';
+            observacionesDiv.style.minHeight = observacionesTextarea.offsetHeight + 'px';
+            observacionesDiv.style.border = observacionesTextarea.style.border;
+            observacionesDiv.style.padding = observacionesTextarea.style.padding;
+            observacionesDiv.textContent = observacionesTextarea.value;
+            observacionesTextarea.parentNode.replaceChild(observacionesDiv, observacionesTextarea);
+        }
+
         // Ocultar el botón de descarga
         downloadBtn.style.display = 'none';
 
         html2canvas(element, {
-            scale: 2, // Escala más baja para menor resolución
+            scale: 2,
             logging: false,
             useCORS: true,
             allowTaint: true
         }).then(canvas => {
             // Convertir a JPEG con calidad 0.5 para máxima compresión
-            const imgData = canvas.toDataURL('image/jpeg', 0.75);
+            const imgData = canvas.toDataURL('image/jpeg', 0.5);
             const pdf = new jsPDF('p', 'mm', 'a4');
             const imgWidth = 210;
             const imgHeight = canvas.height * imgWidth / canvas.width;
@@ -265,6 +279,11 @@ document.addEventListener('DOMContentLoaded', function() {
             placeholders.forEach(obj => {
                 obj.el.placeholder = obj.placeholder;
             });
+
+            // Restaurar el textarea de observaciones
+            if (observacionesDiv && observacionesDiv.parentNode) {
+                observacionesDiv.parentNode.replaceChild(observacionesTextarea, observacionesDiv);
+            }
 
             // Mostrar el botón de descarga nuevamente
             downloadBtn.style.display = '';
