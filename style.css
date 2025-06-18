@@ -184,11 +184,30 @@ table th {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 11px;
     resize: vertical;
     min-height: 50px;
     height: 36px;
     box-sizing: border-box;
+}
+
+#observaciones {
+    font-size: 1em;
+    padding: 8px;
+    line-height: 1.4;
+    resize: vertical;
+    min-height: 50px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Ajuste específico para móviles */
+@media (max-width: 600px) {
+    #observaciones {
+        font-size: 0.95em;
+        padding: 6px;
+    }
 }
 
 .logos {
@@ -389,7 +408,8 @@ table th {
     .info-row input[type="text"],
     .info-row input[type="date"],
     .info-row input[type="time"] {
-        width: 100%;
+        font-size: 13px;
+        /* width: 100%; */
     }
 
     /* Las firmas y logos se mantienen en fila, pero pueden requerir desplazamiento horizontal */
