@@ -189,7 +189,6 @@ table th {
     min-height: 75px;
     /* height: 36px; */
     box-sizing: border-box;
-    touch-action: manipulation; /* Evita zoom en algunos navegadores */
 }
 
 #observaciones {
@@ -202,7 +201,6 @@ table th {
     box-sizing: border-box;
     width: 100%;
     max-width: 100%;
-    touch-action: manipulation; /* Evita zoom en algunos navegadores */
 }
 
 
@@ -492,7 +490,6 @@ table th {
         font-size: 0.9rem; /* O el tamaño que consideres adecuado para que se vea legible */
         /* Si es necesario, también puedes ajustar el padding */
         padding: 6px 8px;
-        touch-action: manipulation; /* Evita zoom en algunos navegadores */
     }
 }
 
@@ -502,6 +499,5 @@ table th {
     #observaciones {
         font-size: 0.9rem; /* Este ya lo tenías, asegúrate de que no entre en conflicto con el de arriba si el de arriba es más específico */
         padding: 6px;
-        touch-action: manipulation; /* Evita zoom en algunos navegadores */
     }
 }
