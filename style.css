@@ -196,7 +196,7 @@ table th {
     padding: 8px;
     line-height: 1.4;
     resize: vertical;
-    min-height: 50px;
+    min-height: 75px;
     box-sizing: border-box;
     width: 100%;
     max-width: 100%;
