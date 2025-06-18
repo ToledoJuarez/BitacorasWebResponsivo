@@ -484,7 +484,7 @@ table th {
 }
 
 /* Ajustes específicos para el textarea de observaciones en pantallas pequeñas con vista de escritorio */
-@media (max-width: 900px) { /* Puedes ajustar este valor según tus pruebas */
+@media (max-width: 3000px) { /* Puedes ajustar este valor según tus pruebas */
     .observations textarea,
     #observaciones {
         font-size: 14px; /* O el tamaño que consideres adecuado para que se vea legible */
