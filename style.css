@@ -191,7 +191,7 @@ table th {
     border-radius: 4px;
     font-size: 0.5rem; /* Ajusta el tamaño de fuente */
     /* resize: vertical; */
-    min-height: 75px;
+    min-height: 60px;
     /* height: 36px; */
     box-sizing: border-box;
 }
@@ -202,7 +202,7 @@ table th {
     padding: 8px;
     line-height: 1.4;
     /* resize: vertical; */
-    min-height: 75px;
+    min-height: 60px;
     box-sizing: border-box;
     width: 100%;
     max-width: 100%;
