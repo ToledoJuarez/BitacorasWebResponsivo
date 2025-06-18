@@ -496,7 +496,7 @@ table th {
 @media (max-width: 600px) {
     .observations textarea,
     #observaciones {
-        font-size: 0.95em; /* Este ya lo tenías, asegúrate de que no entre en conflicto con el de arriba si el de arriba es más específico */
+        font-size: 0.75em; /* Este ya lo tenías, asegúrate de que no entre en conflicto con el de arriba si el de arriba es más específico */
         padding: 6px;
     }
 }
