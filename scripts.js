@@ -292,4 +292,21 @@ document.addEventListener('DOMContentLoaded', function() {
             editSignatureBtns.forEach(btn => btn.style.display = '');
         });
     }
+
+
+    // --- Contador de caracteres para observaciones ---
+    const observacionesTextarea = document.getElementById('observaciones');
+    const contadorObservaciones = document.getElementById('contadorObservaciones');
+    if (observacionesTextarea && contadorObservaciones) {
+        function actualizarContador() {
+            contadorObservaciones.textContent = `${observacionesTextarea.value.length}/195`;
+        }
+        observacionesTextarea.addEventListener('input', function() {
+            if (this.value.length > 195) {
+                this.value = this.value.slice(0, 195);
+            }
+            actualizarContador();
+        });
+        actualizarContador();
+    }
 });
