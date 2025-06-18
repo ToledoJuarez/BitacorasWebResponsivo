@@ -184,7 +184,7 @@ table th {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 11px;
+    font-size: 14px;
     resize: vertical;
     min-height: 75px;
     height: 36px;
@@ -200,12 +200,14 @@ table th {
     box-sizing: border-box;
     width: 100%;
     max-width: 100%;
+    font-size: 14px;
 }
 
 /* Ajuste específico para móviles */
 @media (max-width: 600px) {
     #observaciones {
-        font-size: 0.95em;
+        font-size: 14px;
+        /* font-size: 0.95em; */
         padding: 6px;
     }
 }
