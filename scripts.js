@@ -1,5 +1,3 @@
-// scripts.js
-
 document.addEventListener('DOMContentLoaded', function() {
     // --- Lógica para sugerencias de municipalidades ---
     const municipalidadInput = document.getElementById('municipalidad');
@@ -11,7 +9,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Opciones de municipalidades obtenidas de la imagen adjunta
         const opcionesMunicipalidades = [
-            "ESCUINTLA", "MASAGUA", "GUANAGAZAPA", "LA DEMOCRACIA", "LA GOMERA", "SIPACATE", "TAXISCO", "PUERTO IZAPA", "PUERTO DE SAN JOSÉ", "SIQUINALA", "SANTA LUCIA COTZUMALGUAPA", "PALIN", "SAN VICENTE PACAYA", "SAN LUCAS SACATEPEQUEZ", "SANTIAGO SACATEPEQUEZ", "SANTO DOMINGO XENACOJ", "SUMPANGO", "SANTA LUCIA MILPAS ALTAS", "SAN BARTOLOME MILPAS ALTAS", "MAGDALENA MILPAS ALTAS", "JOCOTENANGO", "SAN ANDRES ITZAPA", "PASTORES", "CIUDAD VIEJA", "SANTA CATARINA BARAHONA", "SAN ANTONIO AGUAS CALIENTES", "SAN JUAN ALOTENANGO", "SAN MIGUEL DUEÑAS", "SANTA MARIA DE JESUS", "ANTIGUA GUATEMALA", "GUATEMALA", "SAN JUAN SACATEPEQUEZ", "MIXCO", "SAN JOSE DEL GOLFO", "PALENCIA", "SAN PEDRO AYAMPUC", "CHUARRANCHO", "SAN PEDRO SACATEPEQUEZ", "SAN RAYMUNDO", "SAN JOSE PINULA", "FRAIJANES", "SANTA CATARINA PINULA", "VILLA CANALES", "AMATITLAN", "SAN MIGUEL PETAPA", "VILLA NUEVA"
+            "ESCUINTLA", "MASAGUA", "GUANAGAZAPA", "LA DEMOCRACIA", "LA GOMERA", "SIPACATE",
+            "TAXISCO", "PUERTO IZAPA", "PUERTO DE SAN JOSÉ", "SIQUINALA",
+            "SANTA LUCIA COTZUMALGUAPA", "PALIN", "SAN VICENTE PACAYA",
+            "SAN LUCAS SACATEPEQUEZ", "SANTIAGO SACATEPEQUEZ", "SANTO DOMINGO XENACOJ",
+            "SUMPANGO", "SANTA LUCIA MILPAS ALTAS", "SAN BARTOLOME MILPAS ALTAS",
+            "MAGDALENA MILPAS ALTAS", "JOCOTENANGO", "SAN ANDRES ITZAPA", "PASTORES",
+            "CIUDAD VIEJA", "SANTA CATARINA BARAHONA", "SAN ANTONIO AGUAS CALIENTES",
+            "SAN JUAN ALOTENANGO", "SAN MIGUEL DUEÑAS", "SANTA MARIA DE JESUS",
+            "ANTIGUA GUATEMALA", "GUATEMALA", "SAN JUAN SACATEPEPEQUEZ", "MIXCO",
+            "SAN JOSE DEL GOLFO", "PALENCIA", "SAN PEDRO AYAMPUC", "CHUARRANCHO",
+            "SAN PEDRO SACATEPEQUEZ", "SAN RAYMUNDO", "SAN JOSE PINULA", "FRAIJANES",
+            "SANTA CATARINA PINULA", "VILLA CANALES", "AMATITLAN", "SAN MIGUEL PETAPA",
+            "VILLA NUEVA"
         ];
 
         // Añadir solo las opciones de municipalidades que no estén ya en sugerenciasGuardadas
@@ -63,7 +73,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-
     // --- Total de dispositivos ---
     const quantityInputs = document.querySelectorAll('.quantity-input');
     const totalDispositivosSpan = document.getElementById('totalDispositivos');
@@ -82,11 +91,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     calcularTotal(); // Calcular el total inicial
 
-
     // Limitar dpiCle a 13 dígitos numéricos
     document.getElementById('dpiCle').addEventListener('input', function(e) {
         this.value = this.value.replace(/\D/g, '').slice(0, 13);
     });
+
     // Limitar movil a 8 dígitos numéricos
     document.getElementById('movil').addEventListener('input', function(e) {
         this.value = this.value.replace(/\D/g, '').slice(0, 8);
@@ -100,7 +109,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const minutos = ahora.getMinutes().toString().padStart(2, '0');
     document.getElementById('horaReporte').value = `${horas}:${minutos}`;
 
-
     // --- Lógica para firmas con modal ---
     let signaturePad;
     let currentSignatureTarget = null;
@@ -113,7 +121,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Ajustar el tamaño real del canvas al tamaño mostrado en pantalla
             function resizeCanvas() {
-                // Obtener el tamaño mostrado en pantalla
                 const rect = canvas.getBoundingClientRect();
                 canvas.width = rect.width;
                 canvas.height = rect.height;
@@ -122,9 +129,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Inicializar SignaturePad después de ajustar el tamaño
             signaturePad = new window.SignaturePad(canvas, {
-                minWidth: 2,   // Grosor mínimo del trazo
-                maxWidth: 4,    // Grosor máximo del trazo
-                penColor: 'rgb(43,108,167)' // Color azul para la firma
+                minWidth: 2,
+                maxWidth: 4,
+                penColor: 'rgb(43,108,167)'
             });
 
             // Si ya hay firma previa, cargarla en el canvas
@@ -166,44 +173,117 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('signatureModal').style.display = 'none';
     };
 
-    // --- Botón para descargar PDF ---
-    document.getElementById('submitAndDownloadBtn').addEventListener('click', function() {
-        const oficialInventario = document.getElementById('oficialInventario').value.trim();
+    // --- Contador de caracteres para observaciones ---
+    const observacionesTextarea = document.getElementById('observaciones');
+    const contadorObservaciones = document.getElementById('contadorObservaciones');
+    if (observacionesTextarea && contadorObservaciones) {
+        function actualizarContador() {
+            contadorObservaciones.textContent = `${observacionesTextarea.value.length}/165`;
+        }
+        observacionesTextarea.addEventListener('input', function() {
+            if (this.value.length > 165) {
+                this.value = this.value.slice(0, 165);
+            }
+            actualizarContador();
+        });
+        actualizarContador();
+    }
+
+    // --- Función para enviar datos a Google Sheets ---
+    async function enviarDatosAGoogleSheets() {
+        // Validar campos obligatorios
+        const oficialInventario = document.getElementById('oficialInventario').value;
         const fechaReporte = document.getElementById('fechaReporte').value;
         const horaReporte = document.getElementById('horaReporte').value;
-        const municipalidad = document.getElementById('municipalidad').value.trim();
-        const acompananteMunicipal = document.getElementById('acompananteMunicipal').value.trim();
-        const firmaOficialImg = document.getElementById('firmaOficialImg').src;
-        const dpiCle = document.getElementById('dpiCle').value.trim();
-        const movil = document.getElementById('movil').value.trim();
+        const municipalidad = document.getElementById('municipalidad').value;
+        const acompananteMunicipal = document.getElementById('acompananteMunicipal').value;
+        const firmaOficialData = document.getElementById('firmaOficialData').value;
 
         if (!oficialInventario || !fechaReporte || !horaReporte || !municipalidad) {
-            alert('Por favor complete todos los campos requeridos: Oficial de Inventario, Fecha, Hora de Reporte y Municipalidad');
-            return;
+            alert('Por favor complete los campos obligatorios: Oficial de Inventario, Fecha, Hora de Reporte y Municipalidad');
+            return false;
         }
         if (!acompananteMunicipal) {
             alert('Por favor ingrese el nombre del acompañante municipal.');
-            document.getElementById('acompananteMunicipal').focus();
-            return;
+            return false;
         }
-        if (!firmaOficialImg || firmaOficialImg.endsWith('base64,')) {
+        if (!firmaOficialData) {
             alert('Por favor agregue la firma del Oficial de Inventario (GAUSS).');
-            return;
+            return false;
         }
-        if (dpiCle !== "" && dpiCle.length !== 13) {
-            alert('El campo DPI (CUI) debe contener exactamente 13 dígitos numéricos.');
-            document.getElementById('dpiCle').focus();
-            return;
-        }
-        if (movil !== "" && movil.length !== 8) {
-            alert('El campo Movil debe contener exactamente 8 dígitos numéricos.');
-            document.getElementById('movil').focus();
-            return;
-        }
-        generarPDF();
-    });
 
-    // --- Generar PDF ---
+        // Recolectar todos los datos del formulario en un objeto FormData
+        const formData = new URLSearchParams(); // Usar URLSearchParams para codificar como x-www-form-urlencoded
+        formData.append('Oficial_Inventario', oficialInventario);
+        formData.append('Fecha_Reporte', fechaReporte);
+        formData.append('Hora_Reporte', horaReporte);
+        formData.append('Camaras', document.getElementById('cantCamaras').value || 0);
+        formData.append('Cronometros', document.getElementById('cantCronometros').value || 0);
+        formData.append('Direccionales', document.getElementById('cantDireccionales').value || 0);
+        formData.append('Lamparas', document.getElementById('cantLamparas').value || 0);
+        formData.append('Mupis', document.getElementById('cantMupis').value || 0);
+        formData.append('Ornamentales', document.getElementById('cantOrnamentales').value || 0);
+        formData.append('Pantalla_Informativa', document.getElementById('cantPantallasInformativas').value || 0);
+        formData.append('Parada_Transmetro', document.getElementById('cantParadaTransmetro').value || 0);
+        formData.append('Parada_Transurbano', document.getElementById('cantParadaTransurbano').value || 0);
+        formData.append('Reflectores', document.getElementById('cantReflectores').value || 0);
+        formData.append('Semaforos', document.getElementById('cantSemaforos').value || 0);
+        formData.append('Vallas_Publicitarias', document.getElementById('cantVallasPublicitarias').value || 0);
+        formData.append('WalPack', document.getElementById('cantWalPak').value || 0);
+        formData.append('Total_Dispositivos', document.getElementById('totalDispositivos').textContent);
+        formData.append('Acompanante_Municipal', acompananteMunicipal || 'SIN ACOMPAÑAMIENTO MUNICIPAL');
+        formData.append('DPI', document.getElementById('dpiCle').value || '');
+        formData.append('Movil', document.getElementById('movil').value || '');
+        formData.append('Municipalidad', municipalidad);
+        formData.append('Cargo_Municipal', document.getElementById('cargoMunicipal').value || '');
+        formData.append('Observaciones', document.getElementById('observaciones').value || '');
+        formData.append('FechaCreacion', new Date().toISOString());
+
+        // try {
+            // Mostrar mensaje de carga
+            const submitBtn = document.getElementById('submitAndDownloadBtn');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Enviando datos...';
+
+            // URL de tu Web App de Google Apps Script
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbz9ucdS0Gb__ka31m8mBNUQZ7YKaN2Ei5JDOZAmv1YTtajBYXFM6P0lhNepFL_3bhB5/exec';
+
+            const response = await fetch(scriptUrl, {
+                method: 'POST',
+                // No necesitamos 'Content-Type': 'application/json'
+                // fetch con URLSearchParams automáticamente establece 'Content-Type': 'application/x-www-form-urlencoded'
+                body: formData // Enviar como URLSearchParams
+            });
+
+            // Verificar si la solicitud fue exitosa
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status}`);
+            }
+
+            // Si la función doPost en Apps Script devuelve "OK" como texto simple,
+            // podemos verificarlo así:
+            const responseText = await response.text();
+            if (responseText === "OK") {
+                console.log('Datos enviados correctamente a Google Sheets');
+                return true;
+            } else {
+                console.error('Error al enviar datos: Respuesta inesperada del servidor:', responseText);
+                alert('Ocurrió un error al enviar los datos. Respuesta del servidor: ' + responseText);
+                return false;
+            }
+        // } catch (error) {
+        //     console.error('Error al enviar datos:', error);
+        //     alert('Ocurrió un error al enviar los datos. Por favor intente nuevamente.');
+        //     return false;
+        // } finally {
+        //     const submitBtn = document.getElementById('submitAndDownloadBtn');
+        //     submitBtn.disabled = false;
+        //     submitBtn.textContent = originalText; // Restaurar el texto original del botón
+        // }
+    }
+
+    // --- Función para generar PDF ---
     function generarPDF() {
         const { jsPDF } = window.jspdf;
         const element = document.getElementById('printableArea');
@@ -239,7 +319,7 @@ document.addEventListener('DOMContentLoaded', function() {
             input.placeholder = '';
         });
 
-        // --- NUEVO: Reemplazar textarea de observaciones por un div temporal con saltos de línea ---
+        // Reemplazar textarea de observaciones por un div temporal con saltos de línea
         const observacionesTextarea = document.getElementById('observaciones');
         let observacionesDiv;
         if (observacionesTextarea) {
@@ -257,7 +337,7 @@ document.addEventListener('DOMContentLoaded', function() {
         downloadBtn.style.display = 'none';
 
         html2canvas(element, {
-            scale: 2, // Escala baja para menor resolución
+            scale: 2,
             logging: false,
             useCORS: true,
             allowTaint: true
@@ -293,20 +373,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // --- Evento principal del botón ---
+    document.getElementById('submitAndDownloadBtn').addEventListener('click', async function(e) {
+        e.preventDefault();
 
-    // --- Contador de caracteres para observaciones ---
-    const observacionesTextarea = document.getElementById('observaciones');
-    const contadorObservaciones = document.getElementById('contadorObservaciones');
-    if (observacionesTextarea && contadorObservaciones) {
-        function actualizarContador() {
-            contadorObservaciones.textContent = `${observacionesTextarea.value.length}/165`;
+        // Primero enviar datos a Google Sheets
+        const envioExitoso = await enviarDatosAGoogleSheets();
+
+        // Solo generar PDF si el envío fue exitoso
+        if (envioExitoso) {
+            generarPDF();
         }
-        observacionesTextarea.addEventListener('input', function() {
-            if (this.value.length > 165) {
-                this.value = this.value.slice(0, 165);
-            }
-            actualizarContador();
-        });
-        actualizarContador();
-    }
+    });
 });
